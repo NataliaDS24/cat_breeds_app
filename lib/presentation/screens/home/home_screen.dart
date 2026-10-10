@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 )
               : ListView.builder(
+                  cacheExtent: 1000,
                   itemCount: !provider.isShowSearch
                       ? provider.listBreeds.length
                       : provider.listBreedsSearch.length,

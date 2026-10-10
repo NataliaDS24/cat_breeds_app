@@ -1,6 +1,7 @@
 import 'package:cat_breeds_app/config/config_imports.dart';
 import 'package:cat_breeds_app/config/router/router_path.dart';
 import 'package:cat_breeds_app/domain/entities/breed.dart';
+import 'package:cat_breeds_app/presentation/widgets/breed_image.dart';
 import 'package:flutter/material.dart';
 
 class CardBreed extends StatelessWidget {
@@ -39,20 +40,19 @@ class CardBreed extends StatelessWidget {
                 )
               ],
             ),
-            if (breed.imageUrl != null)
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.carrotOrange,
-                    width: 10,
-                  ),
-                ),
-                child: Image.network(
-                  breed.imageUrl!,
-                  height: 200,
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.carrotOrange,
+                  width: 10,
                 ),
               ),
+              child: BreedImage(
+                imageUrl: breed.imageUrl,
+                height: 200,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

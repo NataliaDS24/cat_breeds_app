@@ -1,6 +1,7 @@
 import 'package:cat_breeds_app/config/config_imports.dart';
 import 'package:cat_breeds_app/core/utils/bool_utils.dart';
 import 'package:cat_breeds_app/presentation/screens/detail_card/detail_card_provider.dart';
+import 'package:cat_breeds_app/presentation/widgets/breed_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,13 +27,12 @@ class DetailCard extends StatelessWidget {
       ),
       body: Column(
         children: [
-          if (provider.breed.imageUrl != null && provider.breed.imageUrl != '')
-            Expanded(
-              child: Image.network(
-                provider.breed.imageUrl!,
-                width: double.infinity,
-              ),
+          Expanded(
+            child: BreedImage(
+              imageUrl: provider.breed.imageUrl,
+              width: double.infinity,
             ),
+          ),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),

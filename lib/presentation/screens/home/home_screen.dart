@@ -14,45 +14,53 @@ class HomeScreen extends StatelessWidget {
     final provider = context.watch<HomeProvider>();
     return Scaffold(
       appBar: const AppBarHome(),
-      body: provider.isLoading
-          ? const LoadingDataWidget()
-          : provider.listBreeds.isEmpty && !provider.isShowSearch ||
-                  provider.listBreedsSearch.isEmpty && provider.isShowSearch
-              ? const Center(
-                  child: Text(
-                    AppStrings.notBreeds,
-                    style: AppTextStyles.primaryInterSemiBold20,
-                  ),
-                )
-              : NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    if (notification.metrics.extentAfter < 500) {
-                      provider.loadMoreBreeds();
-                    }
-                    return false;
-                  },
-                  child: ListView.builder(
-                    cacheExtent: 1000,
-                    itemCount: !provider.isShowSearch
-                        ? provider.listBreeds.length +
-                            (provider.isLoadingMore ? 1 : 0)
-                        : provider.listBreedsSearch.length,
-                    itemBuilder: (context, index) {
-                      if (!provider.isShowSearch &&
-                          index == provider.listBreeds.length) {
-                        return const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: LoadingDataWidget(),
-                        );
+      body: Column(
+        children: [
+          if (provider.isSearching)
+            const LinearProgressIndicator(color: AppColors.primary),
+          Expanded(
+            child: provider.isLoading
+                ? const LoadingDataWidget()
+                : provider.listBreeds.isEmpty && !provider.isShowSearch ||
+                      provider.listBreedsSearch.isEmpty && provider.isShowSearch
+                ? const Center(
+                    child: Text(
+                      AppStrings.notBreeds,
+                      style: AppTextStyles.primaryInterSemiBold20,
+                    ),
+                  )
+                : NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification.metrics.extentAfter < 500) {
+                        provider.loadMoreBreeds();
                       }
-                      return CardBreed(
-                        breed: !provider.isShowSearch
-                            ? provider.listBreeds[index]
-                            : provider.listBreedsSearch[index],
-                      );
+                      return false;
                     },
+                    child: ListView.builder(
+                      cacheExtent: 1000,
+                      itemCount: !provider.isShowSearch
+                          ? provider.listBreeds.length +
+                                (provider.isLoadingMore ? 1 : 0)
+                          : provider.listBreedsSearch.length,
+                      itemBuilder: (context, index) {
+                        if (!provider.isShowSearch &&
+                            index == provider.listBreeds.length) {
+                          return const Padding(
+                            padding: EdgeInsets.all(20),
+                            child: LoadingDataWidget(),
+                          );
+                        }
+                        return CardBreed(
+                          breed: !provider.isShowSearch
+                              ? provider.listBreeds[index]
+                              : provider.listBreedsSearch[index],
+                        );
+                      },
+                    ),
                   ),
-                ),
+          ),
+        ],
+      ),
     );
   }
 }

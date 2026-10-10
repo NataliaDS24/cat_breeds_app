@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class DetailCard extends StatelessWidget {
   const DetailCard({super.key});
 
-  static const double _imageHeight = 320;
+  static const double _imageHeight = 280;
 
   @override
   Widget build(BuildContext context) {
@@ -40,69 +40,38 @@ class DetailCard extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: _imageHeight,
-            pinned: true,
-            leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: CircleAvatar(
-                backgroundColor: AppColors.black.withValues(alpha: 0.3),
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsetsDirectional.only(
-                start: 64,
-                end: 16,
-                bottom: 16,
-              ),
-              expandedTitleScale: 1.4,
-              title: Text(
-                breed.name,
-                style: AppTextStyles.whiteInterBold20,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Hero(
-                    tag: breed.heroImageTag,
-                    child: BreedImage(
-                      imageUrl: breed.imageUrl,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [0.5, 1],
-                        colors: [
-                          Colors.transparent,
-                          Color(0x99000000),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back),
+        ),
+        centerTitle: true,
+        title: Text(
+          breed.name,
+          style: AppTextStyles.whiteInterBold20,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      body: Column(
+        children: [
+          // The image stays fixed, only the breed info scrolls
+          SizedBox(
+            height: _imageHeight,
+            width: double.infinity,
+            child: Hero(
+              tag: breed.heroImageTag,
+              child: BreedImage(
+                imageUrl: breed.imageUrl,
+                width: double.infinity,
+                height: _imageHeight,
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-            sliver: SliverList.list(
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
               children: [
                 if (originLabel.isNotEmpty)
                   Text(

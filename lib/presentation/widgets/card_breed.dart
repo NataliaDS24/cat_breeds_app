@@ -1,6 +1,6 @@
 import 'package:cat_breeds_app/config/config_imports.dart';
 import 'package:cat_breeds_app/config/router/router_path.dart';
-import 'package:cat_breeds_app/core/utils/string_utils.dart';
+import 'package:cat_breeds_app/core/utils/breed_utils.dart';
 import 'package:cat_breeds_app/domain/entities/breed.dart';
 import 'package:cat_breeds_app/presentation/widgets/breed_image.dart';
 import 'package:cat_breeds_app/presentation/widgets/tag_chip.dart';
@@ -16,23 +16,8 @@ class CardBreed extends StatelessWidget {
   static const double _imageAspectRatio = 16 / 10;
   static const int _maxTemperamentTags = 2;
 
-  String get _subtitle {
-    final origin = [
-      breed.countryCode.toFlagEmoji,
-      breed.origin,
-    ].where((value) => value.isNotEmpty).join(' ');
-    return [
-      origin,
-      breed.breedGroup ?? AppStrings.voidText,
-    ].where((value) => value.isNotEmpty).join(' · ');
-  }
-
   List<String> get _temperamentTags {
-    final tags = breed.temperament
-        .split(',')
-        .map((tag) => tag.trim())
-        .where((tag) => tag.isNotEmpty)
-        .toList();
+    final tags = breed.temperamentList;
     if (tags.length <= _maxTemperamentTags) return tags;
     return [
       ...tags.take(_maxTemperamentTags),
@@ -42,7 +27,7 @@ class CardBreed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subtitle = _subtitle;
+    final subtitle = breed.originLabel;
     final tags = _temperamentTags;
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -74,11 +59,14 @@ class CardBreed extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LayoutBuilder(
-                builder: (context, constraints) => BreedImage(
-                  imageUrl: breed.imageUrl,
-                  width: constraints.maxWidth,
-                  height: constraints.maxWidth / _imageAspectRatio,
-                  fit: BoxFit.cover,
+                builder: (context, constraints) => Hero(
+                  tag: breed.heroImageTag,
+                  child: BreedImage(
+                    imageUrl: breed.imageUrl,
+                    width: constraints.maxWidth,
+                    height: constraints.maxWidth / _imageAspectRatio,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Padding(

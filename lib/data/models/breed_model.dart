@@ -1,5 +1,6 @@
 import 'package:cat_breeds_app/config/config_imports.dart';
 import 'package:cat_breeds_app/core/utils/int_utils.dart';
+import 'package:cat_breeds_app/data/models/height_model.dart';
 import 'package:cat_breeds_app/data/models/weight_model.dart';
 import 'package:cat_breeds_app/domain/entities/breed.dart';
 
@@ -43,6 +44,8 @@ class BreedModel extends Breed {
     required super.hypoallergenic,
     super.referenceImageId,
     super.breedGroup,
+    super.history,
+    super.height,
     super.imageUrl,
   });
 
@@ -94,6 +97,10 @@ class BreedModel extends Breed {
       hypoallergenic: hypoallergenic.getBoolValue,
       referenceImageId: map['reference_image_id'] ?? AppStrings.voidText,
       breedGroup: map['breed_group'],
+      history: map['history'],
+      height: map['height'] == null
+          ? null
+          : HeightModel.fromMap(map: map['height']),
       imageUrl: map['image']?['url'],
     );
   }

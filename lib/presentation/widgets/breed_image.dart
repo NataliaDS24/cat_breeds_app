@@ -20,17 +20,22 @@ class BreedImage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imageUrl == null || imageUrl!.isEmpty) return _placeholder();
 
-    // Decode at display size so images stay in the memory cache while scrolling
+    // Decode at display size so images stay in the memory cache while scrolling.
+    // Images with a width are decoded at screen width, so the card and the
+    // detail share the same cached image
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return CachedNetworkImage(
       imageUrl: imageUrl!,
       height: height,
       width: width,
       fit: fit,
-      memCacheWidth: _toCacheSize(width, pixelRatio),
+      // Resize by a single side so the image keeps its aspect ratio
+      memCacheWidth:
+          width != null ? _toCacheSize(screenWidth, pixelRatio) : null,
       memCacheHeight:
-          _hasSize(width) ? null : _toCacheSize(height, pixelRatio),
+          width == null ? _toCacheSize(height, pixelRatio) : null,
       fadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
       placeholder: (context, url) => SizedBox(

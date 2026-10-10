@@ -9,25 +9,18 @@ class AppStrings {
   static const String searchHint = 'Buscar raza...';
   static const String notBreedsHint = 'Prueba con otro nombre de raza';
 
-  // Card breed
-  static const String more = 'Más...';
-  static const String intelligence = 'Inteligencia: ';
-
   // bool utils
   static const String yes = 'Si';
   static const String not = 'No';
 
   // Detail breed
-  static const String origin = 'País de origen: ';
-  static const String temperament = 'Temperamento: ';
-  static const String imperial = 'Imperial: ';
-  static const String metric = 'Metric: ';
-  static const String affectionLevel = 'Nivel de afecto: ';
-  static const String energyLevel = 'Nivel de energía: ';
-  static const String healthIssues = 'Problemas de salud: ';
-  static const String socialNeeds = 'Necesidades sociales: ';
-  static const String rare = 'Raro: ';
-  static const String natural = 'Natural: ';
-  static const String shortLegs = 'Short legs: ';
-  static const String hypoallergenic = 'Hypoallergenic: ';
+  static const String lifeSpan = 'Esperanza de vida';
+  static const String weight = 'Peso';
+  static const String height = 'Altura';
+  static const String yearsUnit = 'años';
+  static const String kilogramsUnit = 'kg';
+  static const String centimetersUnit = 'cm';
+  static const String temperamentTitle = 'Temperamento';
+  static const String descriptionTitle = 'Descripción';
+  static const String historyTitle = 'Historia';
 }

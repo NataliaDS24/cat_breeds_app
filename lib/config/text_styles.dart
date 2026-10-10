@@ -47,11 +47,54 @@ class AppTextStyles {
     fontSize: 16,
   );
 
+  static const TextStyle textPrimaryInterBold24 = TextStyle(
+    color: AppColors.textPrimary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w700,
+    fontSize: 24,
+  );
+
+  static const TextStyle textPrimaryInterSemiBold16 = TextStyle(
+    color: AppColors.textPrimary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    fontSize: 16,
+  );
+
+  static const TextStyle textPrimaryInterSemiBold14 = TextStyle(
+    color: AppColors.textPrimary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+  );
+
+  static const TextStyle textPrimaryInterRegular15 = TextStyle(
+    color: AppColors.textPrimary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    height: 1.5,
+  );
+
+  static const TextStyle textSecondaryInterRegular12 = TextStyle(
+    color: AppColors.textSecondary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+  );
+
   static const TextStyle textSecondaryInterRegular13 = TextStyle(
     color: AppColors.textSecondary,
     fontFamily: 'Inter',
     fontWeight: FontWeight.w400,
     fontSize: 13,
+  );
+
+  static const TextStyle textSecondaryInterRegular15 = TextStyle(
+    color: AppColors.textSecondary,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
   );
 
   static const TextStyle textSecondaryInterRegular16 = TextStyle(

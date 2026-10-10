@@ -1,3 +1,4 @@
+import 'package:cat_breeds_app/domain/entities/height.dart';
 import 'package:cat_breeds_app/domain/entities/weight.dart';
 
 class Breed {
@@ -39,6 +40,8 @@ class Breed {
   final bool hypoallergenic;
   final String? referenceImageId;
   final String? breedGroup;
+  final String? history;
+  final Height? height;
   String? imageUrl;
 
   Breed({
@@ -80,6 +83,8 @@ class Breed {
     required this.hypoallergenic,
     this.referenceImageId,
     this.breedGroup,
+    this.history,
+    this.height,
     this.imageUrl,
   });
 }

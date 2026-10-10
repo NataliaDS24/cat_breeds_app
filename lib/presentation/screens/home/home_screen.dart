@@ -24,9 +24,30 @@ class HomeScreen extends StatelessWidget {
                 : provider.listBreeds.isEmpty && !provider.isShowSearch ||
                       provider.listBreedsSearch.isEmpty && provider.isShowSearch
                 ? const Center(
-                    child: Text(
-                      AppStrings.notBreeds,
-                      style: AppTextStyles.primaryInterSemiBold20,
+                    child: Padding(
+                      padding: EdgeInsets.all(32),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.pets,
+                            size: 56,
+                            color: AppColors.primary,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            AppStrings.notBreeds,
+                            style: AppTextStyles.textPrimaryInterBold18,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            AppStrings.notBreedsHint,
+                            style: AppTextStyles.textSecondaryInterRegular13,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 : NotificationListener<ScrollNotification>(
@@ -37,6 +58,7 @@ class HomeScreen extends StatelessWidget {
                       return false;
                     },
                     child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       cacheExtent: 1000,
                       itemCount: !provider.isShowSearch
                           ? provider.listBreeds.length +

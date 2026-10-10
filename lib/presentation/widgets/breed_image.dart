@@ -28,8 +28,9 @@ class BreedImage extends StatelessWidget {
       height: height,
       width: width,
       fit: fit,
-      memCacheHeight: _toCacheSize(height, pixelRatio),
       memCacheWidth: _toCacheSize(width, pixelRatio),
+      memCacheHeight:
+          _hasSize(width) ? null : _toCacheSize(height, pixelRatio),
       fadeInDuration: Duration.zero,
       fadeOutDuration: Duration.zero,
       placeholder: (context, url) => SizedBox(
@@ -45,9 +46,11 @@ class BreedImage extends StatelessWidget {
     );
   }
 
+  bool _hasSize(double? size) => size != null && size.isFinite;
+
   int? _toCacheSize(double? size, double pixelRatio) {
-    if (size == null || !size.isFinite) return null;
-    return (size * pixelRatio).round();
+    if (!_hasSize(size)) return null;
+    return (size! * pixelRatio).round();
   }
 
   Widget _placeholder() {

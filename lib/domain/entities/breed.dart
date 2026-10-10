@@ -38,6 +38,7 @@ class Breed {
   final String? wikipediaUrl;
   final bool hypoallergenic;
   final String? referenceImageId;
+  final String? breedGroup;
   String? imageUrl;
 
   Breed({
@@ -78,6 +79,7 @@ class Breed {
     this.wikipediaUrl,
     required this.hypoallergenic,
     this.referenceImageId,
+    this.breedGroup,
     this.imageUrl,
   });
 }

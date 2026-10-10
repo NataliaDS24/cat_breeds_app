@@ -1,7 +1,9 @@
 import 'package:cat_breeds_app/config/config_imports.dart';
 import 'package:cat_breeds_app/config/router/router_path.dart';
+import 'package:cat_breeds_app/core/utils/string_utils.dart';
 import 'package:cat_breeds_app/domain/entities/breed.dart';
 import 'package:cat_breeds_app/presentation/widgets/breed_image.dart';
+import 'package:cat_breeds_app/presentation/widgets/tag_chip.dart';
 import 'package:flutter/material.dart';
 
 class CardBreed extends StatelessWidget {
@@ -11,62 +13,117 @@ class CardBreed extends StatelessWidget {
     required this.breed,
   });
 
+  static const double _imageAspectRatio = 16 / 10;
+  static const int _maxTemperamentTags = 2;
+
+  String get _subtitle {
+    final origin = [
+      breed.countryCode.toFlagEmoji,
+      breed.origin,
+    ].where((value) => value.isNotEmpty).join(' ');
+    return [
+      origin,
+      breed.breedGroup ?? AppStrings.voidText,
+    ].where((value) => value.isNotEmpty).join(' · ');
+  }
+
+  List<String> get _temperamentTags {
+    final tags = breed.temperament
+        .split(',')
+        .map((tag) => tag.trim())
+        .where((tag) => tag.isNotEmpty)
+        .toList();
+    if (tags.length <= _maxTemperamentTags) return tags;
+    return [
+      ...tags.take(_maxTemperamentTags),
+      '+${tags.length - _maxTemperamentTags}',
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.detailCard,
-          arguments: {'breed': breed}),
-      child: Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            20,
+    final subtitle = _subtitle;
+    final tags = _temperamentTags;
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
-          color: AppColors.floralLinen,
-        ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  breed.name,
-                  style: AppTextStyles.blackInterBold18,
-                ),
-                const Text(
-                  AppStrings.more,
-                  style: AppTextStyles.blackInterSemiBold16,
-                )
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.carrotOrange,
-                  width: 10,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => Navigator.pushNamed(
+            context,
+            AppRoutes.detailCard,
+            arguments: {'breed': breed},
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LayoutBuilder(
+                builder: (context, constraints) => BreedImage(
+                  imageUrl: breed.imageUrl,
+                  width: constraints.maxWidth,
+                  height: constraints.maxWidth / _imageAspectRatio,
+                  fit: BoxFit.cover,
                 ),
               ),
-              child: BreedImage(
-                imageUrl: breed.imageUrl,
-                height: 200,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  breed.origin,
-                  style: AppTextStyles.blackInterSemiBold16,
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            breed.name,
+                            style: AppTextStyles.textPrimaryInterBold18,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.chevron_right,
+                          color: AppColors.textSecondary,
+                        ),
+                      ],
+                    ),
+                    if (subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: AppTextStyles.textSecondaryInterRegular13,
+                      ),
+                    ],
+                    if (tags.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: tags
+                            .map((tag) => TagChip(label: tag))
+                            .toList(),
+                      ),
+                    ],
+                  ],
                 ),
-                Text(
-                  '${AppStrings.intelligence}${breed.intelligence}',
-                  style: AppTextStyles.blackInterSemiBold16,
-                )
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

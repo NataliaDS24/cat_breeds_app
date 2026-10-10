@@ -6,6 +6,8 @@ class AppStrings {
 
   // Home
   static const String notBreeds = 'No se encontraron resultados';
+  static const String searchHint = 'Buscar raza...';
+  static const String notBreedsHint = 'Prueba con otro nombre de raza';
 
   // Card breed
   static const String more = 'Más...';

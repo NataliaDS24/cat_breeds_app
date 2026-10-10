@@ -15,13 +15,13 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
         style: AppTextStyles.whiteInterBold20,
       ),
       centerTitle: true,
-      bottom: SearchBarWidget(),
+      bottom: const SearchBarWidget(),
     );
   }
 
   @override
   Size get preferredSize => const Size(
         double.infinity,
-        100,
+        kToolbarHeight + 64,
       );
 }

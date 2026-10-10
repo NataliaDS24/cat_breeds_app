@@ -10,7 +10,7 @@ class SearchBarWidget extends StatefulWidget implements PreferredSizeWidget {
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
 
   @override
-  Size get preferredSize => const Size(double.infinity, 60);
+  Size get preferredSize => const Size(double.infinity, 64);
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
@@ -25,41 +25,51 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   void _clearSearch(HomeProvider provider) {
     controller.clear();
     provider.resetSearch();
+    setState(() {});
+  }
+
+  void _onChanged(HomeProvider provider, String value) {
+    provider.onSearchChanged(value);
+    // Rebuild to show or hide the clear button
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<HomeProvider>();
-    return Container(
-      height: 60,
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
+    final provider = context.read<HomeProvider>();
+    final border = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+      child: TextField(
         controller: controller,
-        onChanged: provider.onSearchChanged,
-        onFieldSubmitted: provider.searchBreeds,
+        onChanged: (value) => _onChanged(provider, value),
+        onSubmitted: provider.searchBreeds,
         textInputAction: TextInputAction.search,
-        style: AppTextStyles.whiteInterSemiBold16,
+        style: AppTextStyles.textPrimaryInterRegular16,
         decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColors.white),
+          hintText: AppStrings.searchHint,
+          hintStyle: AppTextStyles.textSecondaryInterRegular16,
+          filled: true,
+          fillColor: AppColors.white,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          border: border,
+          enabledBorder: border,
+          focusedBorder: border,
+          prefixIcon: const Icon(
+            Icons.search,
+            color: AppColors.textSecondary,
           ),
-          icon: provider.isShowSearch
-              ? IconButton(
+          suffixIcon: controller.text.isEmpty
+              ? null
+              : IconButton(
                   onPressed: () => _clearSearch(provider),
-                  icon: const Icon(Icons.search_off),
-                  color: AppColors.white,
-                )
-              : null,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: AppColors.white),
-          ),
-          suffixIcon: IconButton(
-            onPressed: () => provider.searchBreeds(controller.text),
-            icon: const Icon(Icons.search),
-            color: AppColors.white,
-          ),
+                  icon: const Icon(Icons.close),
+                  color: AppColors.textSecondary,
+                ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:cat_breeds_app/config/env.dart';
 import 'package:cat_breeds_app/core/network/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
 
@@ -18,8 +19,7 @@ class DioClient {
 
   Options get authHeaders => Options(
         headers: {
-          'x-api-key':
-              'live_99Qe4Ppj34NdplyLW67xCV7Ds0oSLKGgcWWYnSzMJY9C0QOu0HUR4azYxWkyW2nr',
+          'x-api-key': Env.apiKey,
         },
       );
 }

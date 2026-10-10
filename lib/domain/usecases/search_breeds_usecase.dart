@@ -1,14 +1,14 @@
 import 'package:cat_breeds_app/domain/entities/breed.dart';
 import 'package:cat_breeds_app/domain/repositories/breed_repository.dart';
 
-class GetAllBreedsUseCase {
+class SearchBreedsUseCase {
   final BreedRepository repository;
 
-  GetAllBreedsUseCase({
+  SearchBreedsUseCase({
     required this.repository,
   });
 
-  Future<List<Breed>> call() {
-    return repository.getAllBreeds();
+  Future<List<Breed>> call({required String query}) {
+    return repository.searchBreeds(query: query);
   }
 }

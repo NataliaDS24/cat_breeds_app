@@ -14,20 +14,51 @@ class BreedRepositoryImpl implements BreedRepository {
   final ImageRemoteDataSource imageRemoteDataSource;
 
   @override
-  Future<List<Breed>> getAllBreeds() async {
+  Future<List<Breed>> getBreeds({
+    required int page,
+    required int limit,
+  }) async {
     List<BreedModel> listBreeds = [];
     try {
-      listBreeds = await breedRemoteDataSource.getAllBreeds();
-      for (var breed in listBreeds) {
-        if (breed.referenceImageId != null && breed.referenceImageId != '') {
-          breed.imageUrl = await imageRemoteDataSource.getImageUrl(
-            id: breed.referenceImageId!,
-          );
-        }
-      }
+      listBreeds = await breedRemoteDataSource.getBreeds(
+        page: page,
+        limit: limit,
+      );
+      await _fillMissingImages(listBreeds);
       return listBreeds;
     } catch (e) {
       return listBreeds;
     }
+  }
+
+  @override
+  Future<List<Breed>> searchBreeds({required String query}) async {
+    List<BreedModel> listBreeds = [];
+    try {
+      listBreeds = await breedRemoteDataSource.searchBreeds(query: query);
+      await _fillMissingImages(listBreeds);
+      return listBreeds;
+    } catch (e) {
+      return listBreeds;
+    }
+  }
+
+  Future<void> _fillMissingImages(List<BreedModel> listBreeds) async {
+    await Future.wait(
+      listBreeds
+          .where(
+            (breed) =>
+                breed.imageUrl == null &&
+                breed.referenceImageId != null &&
+                breed.referenceImageId != '',
+          )
+          .map((breed) async {
+        try {
+          breed.imageUrl = await imageRemoteDataSource.getImageUrl(
+            id: breed.referenceImageId!,
+          );
+        } catch (_) {}
+      }),
+    );
   }
 }

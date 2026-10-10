@@ -92,6 +92,7 @@ class BreedModel extends Breed {
       wikipediaUrl: map['wikipedia_url'],
       hypoallergenic: hypoallergenic.getBoolValue,
       referenceImageId: map['reference_image_id'] ?? AppStrings.voidText,
+      imageUrl: map['image']?['url'],
     );
   }
 }

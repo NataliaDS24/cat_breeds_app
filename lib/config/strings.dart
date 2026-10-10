@@ -1,7 +1,7 @@
 class AppStrings {
   // General
   static const String pathError = 'Ruta no encontrada';
-  static const String appName = 'cat_breeds_app';
+  static const String appName = 'Cat Breeds App';
   static const String voidText = '';
 
   // Home

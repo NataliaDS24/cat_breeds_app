@@ -24,15 +24,33 @@ class HomeScreen extends StatelessWidget {
                     style: AppTextStyles.primaryInterSemiBold20,
                   ),
                 )
-              : ListView.builder(
-                  cacheExtent: 1000,
-                  itemCount: !provider.isShowSearch
-                      ? provider.listBreeds.length
-                      : provider.listBreedsSearch.length,
-                  itemBuilder: (context, index) => CardBreed(
-                    breed: !provider.isShowSearch
-                        ? provider.listBreeds[index]
-                        : provider.listBreedsSearch[index],
+              : NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification.metrics.extentAfter < 500) {
+                      provider.loadMoreBreeds();
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    cacheExtent: 1000,
+                    itemCount: !provider.isShowSearch
+                        ? provider.listBreeds.length +
+                            (provider.isLoadingMore ? 1 : 0)
+                        : provider.listBreedsSearch.length,
+                    itemBuilder: (context, index) {
+                      if (!provider.isShowSearch &&
+                          index == provider.listBreeds.length) {
+                        return const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: LoadingDataWidget(),
+                        );
+                      }
+                      return CardBreed(
+                        breed: !provider.isShowSearch
+                            ? provider.listBreeds[index]
+                            : provider.listBreedsSearch[index],
+                      );
+                    },
                   ),
                 ),
     );

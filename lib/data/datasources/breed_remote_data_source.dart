@@ -15,10 +15,32 @@ class BreedRemoteDataSource {
 
   final DioClient dioClient = DioClient();
 
-  Future<List<BreedModel>> getAllBreeds() async {
+  Future<List<BreedModel>> getBreeds({
+    required int page,
+    required int limit,
+  }) async {
     final String url = '${Env.baseUrl}${ApiConst.breeds}';
     final response = await dioClient.dio.get(
       url,
+      queryParameters: {
+        'page': page,
+        'limit': limit,
+      },
+      options: dioClient.authHeaders,
+    );
+    List valueList = response.data;
+    return valueList
+        .map((element) => BreedModel.fromMap(map: element))
+        .toList();
+  }
+
+  Future<List<BreedModel>> searchBreeds({required String query}) async {
+    final String url = '${Env.baseUrl}${ApiConst.breedsSearch}';
+    final response = await dioClient.dio.get(
+      url,
+      queryParameters: {
+        'q': query,
+      },
       options: dioClient.authHeaders,
     );
     List valueList = response.data;

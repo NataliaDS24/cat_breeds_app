@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cat_breeds_app/config/router/router.dart' as router;
 
-Future<void> runcat_breeds_app() async {
+Future<void> runCatBreedsApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

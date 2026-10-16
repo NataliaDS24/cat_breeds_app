@@ -3,5 +3,5 @@ import 'package:cat_breeds_app/main.dart';
 
 void main() async {
   Env.environment = Environment.development;
-  await runcat_breeds_app();
+  await runCatBreedsApp();
 }
